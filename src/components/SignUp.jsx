@@ -3,13 +3,14 @@ import axios from 'axios';
 import { Box, TextField, Typography } from '@mui/material';
 import MyButton from './MyButton';
 import TextFieldStyling from './TextFieldStyling';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignUp() {
-    const [userInfo, setUserInfo] = useState({});
-
     const emailRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
+    const [status, setStatus] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,15 +19,37 @@ function SignUp() {
         const password = passwordRef.current.value;
 
         try {
-            const postReq = await axios.post('http://localhost:5000/signup', {
-                email: email,
-                password: password,
-                username: username,
-            });
-            console.log('request response', postReq);
+            const postReq = await axios
+                .post('http://localhost:5000/signup', {
+                    email: email,
+                    password: password,
+                    username: username,
+                })
+                .then((res) => {
+                    // console.log(res.data.success);
+                    if (res.data.success) {
+                        toast.success('Account created successfully!', {
+                            position: 'top-right',
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: false,
+                        });
+                    }
+                });
         } catch (err) {
-            console.log(err);
+            toast.error('Account creation failed!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+            });
         }
+
+        console.log(status);
 
         emailRef.current.value = '';
         usernameRef.current.value = '';
@@ -57,21 +80,26 @@ function SignUp() {
                 Sign Up
             </Typography>
             <TextField
+                required
                 inputRef={emailRef}
                 label='Email'
                 sx={TextFieldStyling}
             />
             <TextField
+                required
                 inputRef={usernameRef}
                 label='Username'
                 sx={TextFieldStyling}
             />
             <TextField
+                required
                 inputRef={passwordRef}
                 label='Password'
                 sx={TextFieldStyling}
             />
+
             <MyButton type='submit'>Sign Up</MyButton>
+            <ToastContainer />
         </Box>
     );
 }
