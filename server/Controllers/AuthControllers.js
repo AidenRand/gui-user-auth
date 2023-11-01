@@ -5,10 +5,13 @@ import bcrypt from "bcrypt";
 export async function SignUp(req, res, next) {
     try {
         const {email, username, password, createAt} = req.body;
+        console.log("email", email);
+        console.log("req.body", req.body);
         const existingUser = await User.findOne({email}); 
         
         if (existingUser) {
-            return res.json({message: 'User already exists'});
+            // return res.json({message: 'User already exists'});
+            throw new Error('User already exists');
         }
 
         const user = await User.create({email, username, password, createAt});
@@ -18,10 +21,11 @@ export async function SignUp(req, res, next) {
             httpOnly: false
         });
 
-        res.status(201).json({message: 'User create successfully', success: true, user});
+        res.send({message: 'User create successfully', success: true, user});
         next();
     } catch (err) {
         console.log('err', err);
+        res.status(500).send({message: err.message});
     }
 }
 
