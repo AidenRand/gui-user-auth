@@ -10,7 +10,6 @@ function SignUp() {
     const emailRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
-    const [status, setStatus] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,7 +25,6 @@ function SignUp() {
                     username: username,
                 })
                 .then((res) => {
-                    // console.log(res.data.success);
                     if (res.data.success) {
                         toast.success('Account created successfully!', {
                             position: 'top-right',

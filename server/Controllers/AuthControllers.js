@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 export async function SignUp(req, res, next) {
     try {
         const {email, username, password, createAt} = req.body;
-        console.log("email", email);
         console.log("req.body", req.body);
         const existingUser = await User.findOne({email}); 
         
@@ -33,25 +32,28 @@ export async function LogIn(req, res, next)
 {
     try {
         const { email, password } = req.body;
+        console.log("req.body", req.body);
+
         if(!email || !password ){
           return res.json({message:'All fields are required'})
         }
         const user = await User.findOne({ email });
         if(!user){
-          return res.json({message:'User does not exist' }) 
+          throw new Error('User does not exist');
         }
         const auth = bcrypt.compare(password,user.password)
         if (!auth) {
-          return res.json({message:'Incorrect password or email' }) 
+          throw new Error('Password is incorrect');
         }
          const token = createSecretToken(user._id);
          res.cookie("token", token, {
            withCredentials: true,
            httpOnly: false,
          });
-         res.status(201).json({ message: "User logged in successfully", success: true });
+         res.send({message: "User login successfully", success: true, user});
          next()
       } catch (error) {
         console.error(error);
+        res.status(500).send({ message: error.message })
       }
 }
