@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography, Link } from '@mui/material';
 import MyButton from './MyButton';
 import TextFieldStyling from './TextFieldStyling';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,24 +18,38 @@ function SignUp() {
         const password = passwordRef.current.value;
 
         try {
-            const postReq = await axios
-                .post('http://localhost:5000/signup', {
+            const signupReq = await axios.post('http://localhost:5000/signup', {
+                email: email,
+                password: password,
+                username: username,
+            });
+
+            if (signupReq.data.success) {
+                toast.success('Account created successfully!', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                });
+                const loginReq = await axios.post(
+                    'http://localhost:5000/login',
+                    {
+                        email: email,
+                        password: password,
+                    }
+                );
+                console.log(loginReq.data.token);
+                localStorage.setItem('token', loginReq.data.token);
+                const authReq = await axios.post('http://localhost:5000/', {
                     email: email,
                     password: password,
-                    username: username,
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        toast.success('Account created successfully!', {
-                            position: 'top-right',
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: false,
-                        });
-                    }
+                    Headers: { bearer: loginReq.data.token },
                 });
+
+                console.log(authReq.data);
+            }
         } catch (err) {
             toast.error('Account creation failed!', {
                 position: 'top-right',
@@ -46,8 +60,6 @@ function SignUp() {
                 draggable: false,
             });
         }
-
-        console.log(status);
 
         emailRef.current.value = '';
         usernameRef.current.value = '';
@@ -97,6 +109,15 @@ function SignUp() {
             />
 
             <MyButton type='submit'>Sign Up</MyButton>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Typography>Already a member? </Typography>
+                <Link
+                    href='http://localhost:5173/login'
+                    sx={{ color: 'primary.blue' }}
+                >
+                    {'Login Now'}
+                </Link>
+            </Box>
             <ToastContainer />
         </Box>
     );

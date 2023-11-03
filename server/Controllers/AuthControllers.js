@@ -17,7 +17,7 @@ export async function SignUp(req, res, next) {
         const token = createSecretToken(user._id);
         res.cookie('token', token, {
             withCredentials: true,
-            httpOnly: false
+            httpOnly: false,
         });
 
         res.send({message: 'User create successfully', success: true, user});
@@ -50,7 +50,7 @@ export async function LogIn(req, res, next)
            withCredentials: true,
            httpOnly: false,
          });
-         res.send({message: "User login successfully", success: true, user});
+         res.send({message: "User login successfully", success: true, user, token: token});
          next()
       } catch (error) {
         console.error(error);

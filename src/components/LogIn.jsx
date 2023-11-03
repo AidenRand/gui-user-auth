@@ -5,6 +5,8 @@ import TextFieldStyling from './TextFieldStyling.jsx';
 import MyButton from './MyButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { Link } from '@mui/material';
 
 function LogIn() {
     const emailRef = useRef(null);
@@ -32,6 +34,17 @@ function LogIn() {
                             draggable: false,
                         });
                     }
+                })
+                .then((res) => {
+                    // console.log(res);
+                    // const authReq = axios
+                    //     .post('http://localhost:5000/', {
+                    //         email: email,
+                    //         password: password,
+                    //     })
+                    //     .then((res) => {
+                    //         console.log(res.data);
+                    //     });
                 });
         } catch (err) {
             toast.error('Log In failed!', {
@@ -43,9 +56,6 @@ function LogIn() {
                 draggable: false,
             });
         }
-
-        console.log(status);
-
         emailRef.current.value = '';
         passwordRef.current.value = '';
     };
@@ -87,7 +97,16 @@ function LogIn() {
                     sx={TextFieldStyling}
                 />
 
-                <MyButton type='submit'>Sign Up</MyButton>
+                <MyButton type='submit'>Log In</MyButton>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <Typography>Not a member? </Typography>
+                    <Link
+                        href='http://localhost:5173/signup'
+                        sx={{ color: 'primary.blue' }}
+                    >
+                        {'Signup Now'}
+                    </Link>
+                </Box>
                 <ToastContainer />
             </Box>
         </Box>

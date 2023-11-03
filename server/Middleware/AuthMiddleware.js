@@ -4,16 +4,17 @@ import dotenv from 'dotenv';
 dotenv.config({path: '.env'});
 
 function userVerification(req, res) {
-    const token = req.cookies.token;
+    console.log(req.body.Headers.bearer);
+    const token = req.body.Headers.bearer;
     if (!token)
     {
-        return res.json({status: false});
+        return res.json({message: 'No token found', status: false});
     }
 
     jwt.verify(token, process.env.TOKEN_KEY ,async (err, data) => {
         if (err)
         {
-            return res.json({status: false});
+            return res.json({message: err.message, status: false});
         } else {
             const user = await User.findById(data.id);
             if (user)
