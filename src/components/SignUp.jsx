@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Box, TextField, Typography, Link } from '@mui/material';
 import MyButton from './MyButton';
@@ -10,6 +11,7 @@ function SignUp() {
     const emailRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,6 +49,7 @@ function SignUp() {
                     password: password,
                     Headers: { bearer: loginReq.data.token },
                 });
+                navigate('/');
 
                 console.log(authReq.data);
             }

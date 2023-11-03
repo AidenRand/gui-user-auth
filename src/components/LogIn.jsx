@@ -11,6 +11,7 @@ import { Link } from '@mui/material';
 function LogIn() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,34 +19,20 @@ function LogIn() {
         const password = passwordRef.current.value;
 
         try {
-            const postReq = await axios
-                .post('http://localhost:5000/login', {
-                    email: email,
-                    password: password,
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        toast.success('Logged In successful!', {
-                            position: 'top-right',
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: false,
-                        });
-                    }
-                })
-                .then((res) => {
-                    // console.log(res);
-                    // const authReq = axios
-                    //     .post('http://localhost:5000/', {
-                    //         email: email,
-                    //         password: password,
-                    //     })
-                    //     .then((res) => {
-                    //         console.log(res.data);
-                    //     });
-                });
+            const loginReq = await axios.post('http://localhost:5000/login', {
+                email: email,
+                password: password,
+            });
+            console.log(loginReq.data.token);
+            console.log(loginReq.data);
+            const authReq = await axios.post('http://localhost:5000/', {
+                email: email,
+                password: password,
+                Headers: { bearer: loginReq.data.token },
+            });
+            console.log(authReq.data);
+
+            navigate('/');
         } catch (err) {
             toast.error('Log In failed!', {
                 position: 'top-right',
