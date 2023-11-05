@@ -23,8 +23,10 @@ function LogIn() {
                 email: email,
                 password: password,
             });
-            console.log(loginReq.data.token);
-            console.log(loginReq.data);
+            // console.log(loginReq.data.token);
+            // console.log(loginReq.data);
+            // console.log(loginReq.data.user._id);
+            localStorage.setItem('userId', loginReq.data.user._id);
             const authReq = await axios.post('http://localhost:5000/', {
                 email: email,
                 password: password,

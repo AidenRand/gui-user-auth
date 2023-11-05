@@ -10,28 +10,39 @@ const Home = () => {
     const navigate = useNavigate();
     const [cookies, removeCookie] = useCookies([]);
     const [username, setUsername] = useState('');
-    useEffect(() => {
-        const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
-        const verifyCookie = async () => {
-            if (!token) {
-                navigate('/login');
-            }
-            const { data } = await axios.post(
-                'http://localhost:4000',
-                {},
-                { withCredentials: true }
+    const getPosts = async () => {
+        try {
+            const postReq = await axios.post('http://localhost:5000/getposts', {
+                userId: userId,
+            });
+            console.log(postReq.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const createPost = async () => {
+        try {
+            const createPostReq = await axios.post(
+                'http://localhost:5000/createpost',
+                {
+                    userid: userId,
+                    title: 'title',
+                    content: 'content',
+                }
             );
-            const { status, user } = data;
-            setUsername(user);
-            return status
-                ? toast(`Hello ${user}`, {
-                      position: 'top-right',
-                  })
-                : (removeCookie('token'), navigate('/login'));
-        };
-        verifyCookie();
-    }, [cookies, navigate, removeCookie]);
+
+            // console.log(createPostReq.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    createPost();
+
+    getPosts();
+
     const Logout = () => {
         removeCookie('token');
         navigate('/signup');

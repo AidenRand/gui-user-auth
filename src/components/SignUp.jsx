@@ -42,7 +42,7 @@ function SignUp() {
                         password: password,
                     }
                 );
-                const authReq = await axios.post('http://localhost:5000/', {
+                await axios.post('http://localhost:5000/', {
                     email: email,
                     password: password,
                     Headers: { bearer: loginReq.data.token },
