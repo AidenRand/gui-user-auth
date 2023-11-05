@@ -30,7 +30,6 @@ function LogIn() {
                 password: password,
                 Headers: { bearer: loginReq.data.token },
             });
-            console.log(authReq.data);
 
             navigate('/');
         } catch (err) {

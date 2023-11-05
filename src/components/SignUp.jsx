@@ -42,16 +42,12 @@ function SignUp() {
                         password: password,
                     }
                 );
-                console.log(loginReq.data.token);
-                localStorage.setItem('token', loginReq.data.token);
                 const authReq = await axios.post('http://localhost:5000/', {
                     email: email,
                     password: password,
                     Headers: { bearer: loginReq.data.token },
                 });
                 navigate('/');
-
-                console.log(authReq.data);
             }
         } catch (err) {
             toast.error('Account creation failed!', {
