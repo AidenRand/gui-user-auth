@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
-    userid: {
+    userId: {
         type: String,
         required: [true, "User ID is required"],
     },
