@@ -20,6 +20,7 @@ const Home = () => {
     const Logout = () => {
         removeCookie('token');
         navigate('/signup');
+        localStorage.removeItem('userId');
     };
 
     const getPosts = async () => {

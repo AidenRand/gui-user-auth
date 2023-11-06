@@ -42,6 +42,8 @@ function SignUp() {
                         password: password,
                     }
                 );
+                localStorage.setItem('userId', loginReq.data.user._id);
+
                 await axios.post('http://localhost:5000/', {
                     email: email,
                     password: password,
