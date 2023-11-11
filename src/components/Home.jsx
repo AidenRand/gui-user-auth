@@ -9,8 +9,6 @@ import textFieldStyling from './TextFieldStyling';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [cookies, removeCookie] = useCookies([]);
-    const [username, setUsername] = useState('');
     const [postsArr, setPostsArr] = useState([]);
     const titleRef = useRef(null);
     const contentRef = useRef(null);
