@@ -31,10 +31,6 @@ const Home = () => {
                 );
 
                 setPostsArr(postReq.data.posts);
-
-                posts.map((post, i) => {
-                    console.log('post', post, i);
-                });
             } catch (err) {
                 console.log(err);
             }
