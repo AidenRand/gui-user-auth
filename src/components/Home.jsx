@@ -38,8 +38,6 @@ const Home = () => {
         getPosts();
     }, []);
 
-    console.log('postsArr', postsArr);
-
     const createPost = async () => {
         const title = titleRef.current.value;
         const content = contentRef.current.value;
