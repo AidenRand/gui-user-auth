@@ -42,14 +42,11 @@ const Home = () => {
         const title = titleRef.current.value;
         const content = contentRef.current.value;
         try {
-            const createPostReq = await axios.post(
-                'http://localhost:5000/createpost',
-                {
-                    userId: userId,
-                    title: title,
-                    content: content,
-                }
-            );
+            await axios.post('http://localhost:5000/createpost', {
+                userId: userId,
+                title: title,
+                content: content,
+            });
         } catch (err) {
             console.log(err);
         }
