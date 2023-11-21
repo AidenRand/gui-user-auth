@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Box, TextField, Typography } from '@mui/material';
